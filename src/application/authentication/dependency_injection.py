@@ -23,15 +23,12 @@ oauth2_oauth = OAuth2PasswordBearer(
 
 async def get_current_user(token: str = Depends(oauth2_oauth)) -> User:
     try:
-        print(f"token {token}")
         payload = jwt.decode(
             token,
             settings.authentication.access_token.secret_key,
             algorithms=[settings.authentication.algorithm],
         )
-        print(f"payload {payload}")
         token_payload = TokenPayload(**payload)
-
         if datetime.fromtimestamp(token_payload.exp) < datetime.now():
             raise AuthenticationError
     except (JWTError, ValidationError):
@@ -39,5 +36,7 @@ async def get_current_user(token: str = Depends(oauth2_oauth)) -> User:
         raise AuthenticationError
 
     user = await UsersRepository().get_by_username(username=token_payload.sub)
+    if user is None:
+        raise AuthenticationError
 
     return user

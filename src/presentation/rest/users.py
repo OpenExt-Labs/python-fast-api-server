@@ -2,8 +2,8 @@ from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
 from fastapi.responses import JSONResponse
 from loguru import logger
-from pydantic import BaseModel
 
+from src.infrastructure.database.transaction import transaction
 from src.domain.users.repository import UsersRepository
 from src.domain.users.models import UserCreateRequestBody, UserPublic, UserUncommited
 
@@ -14,6 +14,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.post("", status_code=201)
+@transaction
 async def user_create(schema: UserCreateRequestBody) -> Response[UserPublic]:
   try:
     """Create a new user."""
@@ -27,6 +28,7 @@ async def user_create(schema: UserCreateRequestBody) -> Response[UserPublic]:
     logger.exception(e)
 
 @router.get("", status_code=200)
+@transaction
 async def users_list() -> ResponseMulti[UserPublic]:
   try:
     """Get all users."""

@@ -38,6 +38,8 @@ async def order_create(
 ) -> Response[OrderPublic]:
     """Create a new order."""
 
+    print(f"user: {user}")
+
     # Save product to the database
     order: Order = await orders.create(payload=schema.dict(), user=user)
     order_public = OrderPublic.from_orm(order)

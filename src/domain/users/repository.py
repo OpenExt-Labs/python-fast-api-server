@@ -27,5 +27,11 @@ class UsersRepository(BaseRepository[UsersTable]):
             return None
         
     async def create(self, schema: UserUncommited) -> User:
-        instance: UsersTable = await self._save(schema.dict())
-        return User.from_orm(instance)
+        try:
+            user = await self.get_by_username(username=schema.username)
+            if user is not None:
+                raise Exception("User already exists")
+            instance: UsersTable = await self._save(schema.dict())
+            return User.from_orm(instance)
+        except Exception as e:
+            raise e

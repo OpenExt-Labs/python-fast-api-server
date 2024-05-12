@@ -9,6 +9,4 @@ async def create(payload: dict, user: User) -> Order:
 
     order = await OrdersRepository().create(OrderUncommited(**payload))
 
-    # Do som other stuff...
-
     return order

@@ -6,7 +6,7 @@ __all__ = ("UserUncommited", "User", "UserCreateRequestBody", "UserPublic")
 
 class _UserInternal(InternalModel):
     username: str
-    password: str
+    password: str 
     email: str
 
 
