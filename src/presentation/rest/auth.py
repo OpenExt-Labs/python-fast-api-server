@@ -10,17 +10,6 @@ from jose import JWTError, jwt
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-fake_users_db = {
-    "johndoe": {
-        "username": "sangle",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
-
-
 class AuthRequestBody(BaseModel):
     username: str
     password: str
@@ -44,7 +33,7 @@ class UserInDB(User):
 
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 3600
+ACCESS_TOKEN_EXPIRE_DAYS = 30 
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -53,7 +42,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post("/token")
 async def auth_openapi(body: AuthRequestBody):
-    token = create_access_token(data={"sub": body.username})
+    token = create_access_token(data={"sub": body.username}, expires_delta=timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS))
     return {"access_token": token, "token_type": "bearer"} 
 
 
@@ -73,25 +62,6 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-    except JWTError:
-        raise credentials_exception
-    user = get_user(fake_users_db, username=token_data.username)
-    if user is None:
-        raise credentials_exception
-    return user
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -109,10 +79,3 @@ def authenticate_user(fake_db, username: str, password: str):
     if not verify_password(password, user.hashed_password):
         return False
     return user
-
-async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)],
-):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user

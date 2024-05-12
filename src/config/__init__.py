@@ -2,7 +2,13 @@ from pathlib import Path
 
 from pydantic import BaseConfig, BaseModel, BaseSettings
 import aiomysql
+from pydantic import BaseSettings
+import aiomysql
+from dotenv import load_dotenv
+import os
 
+# Database Settings
+load_dotenv(".env.local")
 
 # API Settings
 class APIUrlsSettings(BaseModel):
@@ -19,17 +25,18 @@ class PublicApiSettings(BaseModel):
     urls: APIUrlsSettings = APIUrlsSettings()
 
 
-# Database Settings
-class DatabaseSettings(BaseModel):
-    name: str = "tts_db"
-    host: str = "192.168.247.2"
-    port: int = 3306
-    user: str = "root"
-    password: str = "87!937HaN"
+class DatabaseSettings(BaseSettings):
+    name: str = os.getenv("MYSQL_DATABASE", "tts_db")
+    host: str = os.getenv("MYSQL_HOST", "localhost")
+    port: int = int(os.getenv("MYSQL_PORT", 3306))
+    user: str = os.getenv("MYSQL_USER", "root")
+    password: str = os.getenv("MYSQL_PASSWORD", "12345678")
+
+    print(name, host, port, user, password)
 
     @property
     def url(self) -> str:
-        return f"mysql+aiomysql://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
+        return f"mysql+aiomysql://root:{self.password}@{self.host}:{self.port}/{self.name}"
 
     async def connect(self):
         return await aiomysql.connect(

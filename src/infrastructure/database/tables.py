@@ -32,6 +32,7 @@ class UsersTable(Base):
 
     username: str = Column(String, nullable=False)  # type: ignore
     password: str = Column(String, nullable=False)  # type: ignore
+    email: str = Column(String, nullable=False)  # type: ignore
 
 
 class ProductsTable(Base):

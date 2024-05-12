@@ -27,6 +27,7 @@ def upgrade() -> None:
     op.create_table('users',
     sa.Column('username', sa.String(255), nullable=False),
     sa.Column('password', sa.String(255), nullable=False),
+    sa.Column('email', sa.String(255), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_users'))
     )
