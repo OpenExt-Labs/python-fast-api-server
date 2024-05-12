@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from pydantic import BaseConfig, BaseModel, BaseSettings
+import aiomysql
 
 
 # API Settings
@@ -20,11 +21,24 @@ class PublicApiSettings(BaseModel):
 
 # Database Settings
 class DatabaseSettings(BaseModel):
-    name: str = "db.sqlite3"
+    name: str = "tts_db"
+    host: str = "192.168.247.2"
+    port: int = 3306
+    user: str = "root"
+    password: str = "87!937HaN"
 
     @property
     def url(self) -> str:
-        return f"sqlite+aiosqlite:///./{self.name}"
+        return f"mysql+aiomysql://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
+
+    async def connect(self):
+        return await aiomysql.connect(
+            host=self.host,
+            port=self.port,
+            user=self.user,
+            password=self.password,
+            db=self.name
+        )
 
 
 class KafkaSettings(BaseModel):

@@ -25,6 +25,8 @@ pydantic = { version = "~1.10", extras = ["dotenv"] }
 python-jose = { version = "~3.3", extras = ["cryptography"] }
 uvicorn = "~0.21.0"
 websockets = "~11.0"
+pymysql = "^1.1.0"
+aiomysql = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "~23.1"
