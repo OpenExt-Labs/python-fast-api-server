@@ -20,9 +20,9 @@ fastapi = "0.92.0"
 greenlet = "~2.0"
 gunicorn = "~20.1"
 loguru = "~0.6"
-passlib = { version = "~1.7", extras = ["bcrypt"] }
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 pydantic = { version = "~1.10", extras = ["dotenv"] }
-python-jose = { version = "~3.3", extras = ["cryptography"] }
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 uvicorn = "~0.21.0"
 websockets = "~11.0"
 pymysql = "^1.1.0"

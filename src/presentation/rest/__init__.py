@@ -1,1 +1,1 @@
-from src.presentation.rest import orders, products
+from src.presentation.rest import orders, products, auth

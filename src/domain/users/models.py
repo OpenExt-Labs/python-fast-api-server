@@ -8,7 +8,7 @@ __all__ = ("UserUncommited", "User")
 class UserUncommited(InternalModel):
     """This schema is used for creating instance in the database."""
 
-    usernae: str
+    username: str
     password: str
 
 

@@ -26,7 +26,7 @@ class TokenClaimPublic(PublicModel):
 # Internal models
 # ------------------------------------------------------
 class TokenPayload(InternalModel):
-    sub: int
+    sub: str 
     exp: int
 
 

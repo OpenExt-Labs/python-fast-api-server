@@ -65,12 +65,12 @@ class LoggingSettings(BaseModel):
 
 
 class AccessTokenSettings(BaseModel):
-    secret_key: str = "invaliad"
+    secret_key: str = "your-secret-key"
     ttl: int = 100  # seconds
 
 
 class RefreshTokenSettings(BaseModel):
-    secret_key: str = "invaliad"
+    secret_key: str = "your-secret-key"
     ttl: int = 100  # seconds
 
 
