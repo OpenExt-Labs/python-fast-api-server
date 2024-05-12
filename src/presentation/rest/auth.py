@@ -1,4 +1,5 @@
 from typing import Annotated, Union
+import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError
@@ -6,6 +7,8 @@ from pydantic import BaseModel
 from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from jose import JWTError, jwt
+
+from src.domain.users.repository import UsersRepository
 
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -42,6 +45,10 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post("/token")
 async def auth_openapi(body: AuthRequestBody):
+    user = await UsersRepository().get_by_username(username=body.username)
+    if not user or not bcrypt.checkpw(body.password.encode(), user.password.encode()):
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    
     token = create_access_token(data={"sub": body.username}, expires_delta=timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS))
     return {"access_token": token, "token_type": "bearer"} 
 

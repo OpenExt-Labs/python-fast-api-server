@@ -8,7 +8,7 @@ from src.domain.users.repository import UsersRepository
 from src.domain.users.models import UserCreateRequestBody, UserPublic, UserUncommited
 
 from src.infrastructure.models import Response, ResponseMulti
-
+import bcrypt
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -22,6 +22,8 @@ async def user_create(schema: UserCreateRequestBody) -> Response[UserPublic]:
     if user is not None:
       return JSONResponse(status_code=400, content={"message": "User already exists"}) 
     else:
+      hashed_password = bcrypt.hashpw(schema.password.encode(), bcrypt.gensalt())
+      schema.password = hashed_password
       user = await UsersRepository().create(UserUncommited(**schema.dict()))
       return Response[UserPublic](result=user)
   except Exception as e:
