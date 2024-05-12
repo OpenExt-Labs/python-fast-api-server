@@ -16,8 +16,8 @@ from loguru import logger
 __all__ = ("get_current_user",)
 
 oauth2_oauth = OAuth2PasswordBearer(
-    tokenUrl="/auth/openapi",
-    scheme_name=settings.authentication.scheme,
+    tokenUrl="/auth/token",
+    scopes={"read": "Read", "write": "Write"},
 )
 
 
