@@ -3,9 +3,10 @@ from fastapi.params import Depends
 from fastapi.responses import JSONResponse
 from loguru import logger
 
+from src.application.authentication import get_current_user
 from src.infrastructure.database.transaction import transaction
 from src.domain.users.repository import UsersRepository
-from src.domain.users.models import UserCreateRequestBody, UserPublic, UserUncommited
+from src.domain.users.models import User, UserCreateRequestBody, UserPublic, UserUncommited
 
 from src.infrastructure.models import Response, ResponseMulti
 import bcrypt
@@ -30,7 +31,6 @@ async def user_create(schema: UserCreateRequestBody) -> Response[UserPublic]:
     logger.exception(e)
 
 @router.get("", status_code=200)
-@transaction
 async def users_list() -> ResponseMulti[UserPublic]:
   try:
     """Get all users."""
@@ -39,5 +39,13 @@ async def users_list() -> ResponseMulti[UserPublic]:
         async for user in UsersRepository().all()
     ]
     return ResponseMulti[UserPublic](result=users_public)
+  except Exception as e:
+    logger.exception(e)
+
+@router.get("/{me}", status_code=200)
+async def user_me(user: User = Depends(get_current_user)) -> Response[UserPublic]:
+  try:
+    """Get the current user."""
+    return Response[UserPublic](result=user)
   except Exception as e:
     logger.exception(e)
