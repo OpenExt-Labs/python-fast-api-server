@@ -32,8 +32,6 @@ class DatabaseSettings(BaseSettings):
     user: str = os.getenv("MYSQL_USER", "root")
     password: str = os.getenv("MYSQL_PASSWORD", "12345678")
 
-    print(name, host, port, user, password)
-
     @property
     def url(self) -> str:
         return f"mysql+aiomysql://root:{self.password}@{self.host}:{self.port}/{self.name}"

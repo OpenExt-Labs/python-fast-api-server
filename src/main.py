@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from loguru import logger
 
+from src.application.profiling import ProfilingMiddleware
 from src.config import settings
 from src.infrastructure import application
 from src.presentation import rest
@@ -27,7 +28,9 @@ logger.add(
 # -------------------------------
 app: FastAPI = application.create(
     debug=settings.debug,
-    rest_routers=(rest.products.router, rest.orders.router, rest.auth.router, rest.users.router),
+    rest_routers=(rest.products.router, rest.orders.router, rest.auth.router, rest.users.router, rest.profiling.router),
     startup_tasks=[],
     shutdown_tasks=[],
 )
+
+app.add_middleware(ProfilingMiddleware)
