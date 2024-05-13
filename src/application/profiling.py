@@ -22,10 +22,11 @@ class ProfilingMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         process_time = time.time() - start_time
         endpoint_name = request.url.path
+        method = request.method
 
         # Lock the section where data is modified to ensure thread safety
         with lock:
-            data = profile_data[endpoint_name]
+            data = profile_data[f"{method}-{endpoint_name}"]
             data['total_requests'] += 1
             data['total_time'] += process_time
             data['last_time'] = process_time
