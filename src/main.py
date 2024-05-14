@@ -16,6 +16,6 @@ app: FastAPI = application.create(
     shutdown_tasks=[],
 )
 
-logger.error("Application started")
+logger.info("Application started")
 
 app.add_middleware(ProfilingMiddleware)
