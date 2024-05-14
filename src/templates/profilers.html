@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>API Profiling</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>API Profiling</h2>
+    <table>
+      <tr>
+        <th>No</th>
+        <th>Name</th>
+        <th>TotalReq</th>
+        <th>PendingReq</th>
+        <th>TotalTmProc (ms)</th>
+        <th>LastTmProc (ms)</th>
+        <th>ProcRate (procs/second)</th>
+        <th>ReqRate (reqs/second)</th>
+      </tr>
+      {% for index, (endpoint, metrics) in enumerate(profile_data.items(),
+      start=1) %}
+      <tr>
+        <td>{{ index }}</td>
+        <td>{{ endpoint }}</td>
+        <td>{{ metrics.total_requests }}</td>
+        <td>0</td>
+        <td>{{ metrics.total_time }}</td>
+        <td>{{ metrics.last_time }}</td>
+        <td>{{ metrics.avg_time }}</td>
+        <td>{{ metrics.processing_rate }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
