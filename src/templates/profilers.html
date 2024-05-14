@@ -21,9 +21,18 @@
         background-color: #f9f9f9;
       }
     </style>
+    <script>
+      // Get the interval from the context
+      const interval = {{ interval }};
+      // Set an interval to reload the page every specified seconds
+      setInterval(() => {
+          window.location.reload();
+      }, interval * 1000);
+    </script>
   </head>
   <body>
     <h2>API Profiling</h2>
+    <p>Profiling Interval: {{ interval }} seconds</p>
     <table>
       <tr>
         <th>No</th>
