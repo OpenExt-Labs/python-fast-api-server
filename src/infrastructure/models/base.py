@@ -82,6 +82,7 @@ _PublicModel = TypeVar("_PublicModel", bound=PublicModel)
 
 T = TypeVar("T")
 
+
 class ResponseModel(GenericModel, Generic[T]):
     error: int = Field(0, description="Error code")
     msg: str = Field("", description="Error message")
@@ -96,7 +97,8 @@ class ResponseModel(GenericModel, Generic[T]):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         extra = Extra.ignore
-        alias_generator = lambda s: "".join(
+
+        def alias_generator(s): return "".join(
             word.capitalize() if i else word
             for i, word in enumerate(s.split('_'))
         )

@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, Request, status
-
 from src.application import orders
 from src.application.authentication import get_current_user
 from src.domain.orders import (

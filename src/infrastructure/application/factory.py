@@ -15,6 +15,7 @@ from src.infrastructure.errors import (
 
 __all__ = ("create",)
 
+
 def create(
     *_,
     rest_routers: Iterable[APIRouter],

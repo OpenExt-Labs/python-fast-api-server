@@ -71,3 +71,9 @@ This FastAPI server uses a consistent response structure for all API endpoints, 
    - The server will start running at `http://localhost:8000`.
    - You can access the API documentation at `http://localhost:8000/docs`.
    - Profiler will be available at `http://localhost:8000/profiler?p=`.
+
+### Lint
+1. **Run the linter:**
+   ```sh
+   poetry run autopep8 --in-place --aggressive --aggressive **/*.py
+   ```

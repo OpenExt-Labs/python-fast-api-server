@@ -7,8 +7,11 @@ router = APIRouter(prefix="/profilers", tags=["Profilers"])
 
 templates = Jinja2Templates(directory="src/templates")
 
+
 @router.get("", status_code=200, dependencies=[Depends(verify_password)])
-async def get_profilers(request: Request, interval: int = Depends(get_interval)):
+async def get_profilers(
+        request: Request,
+        interval: int = Depends(get_interval)):
     rounded_data = {}
     for endpoint, metrics in profile_data.items():
         rounded_data[endpoint] = {
@@ -19,5 +22,9 @@ async def get_profilers(request: Request, interval: int = Depends(get_interval))
             'processing_rate': round(metrics['processing_rate'], 2) if metrics['processing_rate'] != float('inf') else float('inf'),
             'interval': interval  # Adding interval to context if needed
         }
-    context = {"request": request, "profile_data": rounded_data, "enumerate": enumerate, "interval": interval}
+    context = {
+        "request": request,
+        "profile_data": rounded_data,
+        "enumerate": enumerate,
+        "interval": interval}
     return templates.TemplateResponse("profilers.html", context)

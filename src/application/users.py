@@ -9,8 +9,9 @@ from src.infrastructure.database.transaction import transaction
 async def create(payload: UserCreateRequestBody) -> User:
     user = await UsersRepository().get_by_username(username=payload.username)
     if user:
-      raise BadRequestError(message=f"{payload.username} already exists") 
-    hashed_password = bcrypt.hashpw(payload.password.encode(), bcrypt.gensalt())
+        raise BadRequestError(message=f"{payload.username} already exists")
+    hashed_password = bcrypt.hashpw(
+        payload.password.encode(), bcrypt.gensalt())
     payload.password = hashed_password
     user = await UsersRepository().create(UserUncommited(**payload.dict()))
     return user

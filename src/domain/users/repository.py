@@ -17,7 +17,7 @@ class UsersRepository(BaseRepository[UsersTable]):
     async def get(self, id_: int) -> User:
         instance = await self._get(key="id", value=id_)
         return User.from_orm(instance)
-    
+
     async def get_by_username(self, username: str) -> User:
         try:
             instance = await self._get(key="username", value=username)
@@ -25,7 +25,7 @@ class UsersRepository(BaseRepository[UsersTable]):
         except Exception as e:
             # Handle the not found exception here
             return None
-        
+
     async def create(self, schema: UserUncommited) -> User:
         try:
             user = await self.get_by_username(username=schema.username)

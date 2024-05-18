@@ -11,6 +11,8 @@ import os
 load_dotenv(".env.local")
 
 # API Settings
+
+
 class APIUrlsSettings(BaseModel):
     """Configure public urls."""
 

@@ -13,10 +13,10 @@ logger.info("Application starting...")
 app: FastAPI = create(
     debug=settings.debug,
     rest_routers=(
-        rest.products.router, 
-        rest.orders.router, 
-        rest.auth.router, 
-        rest.users.router, 
+        rest.products.router,
+        rest.orders.router,
+        rest.auth.router,
+        rest.users.router,
         rest.profiling.router
     ),
     startup_tasks=[],

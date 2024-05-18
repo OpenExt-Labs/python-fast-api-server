@@ -16,6 +16,7 @@ profile_data: Dict[str, Dict] = defaultdict(lambda: {
     'avg_time': 0.0
 })
 
+
 class ProfilingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         start_time = time.time()
@@ -38,4 +39,3 @@ class ProfilingMiddleware(BaseHTTPMiddleware):
                 data['processing_rate'] = float('inf')
 
         return response
-

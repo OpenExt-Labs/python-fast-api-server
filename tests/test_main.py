@@ -10,6 +10,7 @@ load_dotenv('.env.local')
 
 client = TestClient(app)
 
+
 def test_read_users_me():
     print('test_read_users_me')
     url = "/users/me"
@@ -20,7 +21,12 @@ def test_read_users_me():
     response = client.get(url, headers=headers)
     print(response.json())
     assert response.status_code == 200
-    assert response.json() == {'result': {'username': 'sangle1', 'email': 'sang.lequang94@gmail.com', 'id': 1}}
+    assert response.json() == {
+        'result': {
+            'username': 'sangle1',
+            'email': 'sang.lequang94@gmail.com',
+            'id': 1}}
+
 
 def test_read_users_me_invalid_token():
     url = "/users/me"
@@ -28,8 +34,8 @@ def test_read_users_me_invalid_token():
         'Authorization': f"Bearer invalid_token",
         'Content-Type': 'application/json'
     }
-    
+
     response = client.get(url, headers=headers)
     print(response.json())
-    
+
     assert response.status_code == 401
