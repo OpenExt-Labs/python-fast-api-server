@@ -56,10 +56,18 @@ This FastAPI server uses a consistent response structure for all API endpoints, 
     ```
 
 ### Running the Server
-```sh
-poetry run uvicorn src.main:app --reload
-```
-- The server will start running at `http://localhost:8000`.
-- You can access the API documentation at `http://localhost:8000/docs`.
-- Profiler will be available at `http://localhost:8000/profiler?p=`.
-   
+1. **Run the FastAPI server:**
+   ```sh
+   poetry run uvicorn src.main:app --reload
+   ```
+   - The server will start running at `http://localhost:8000`.
+   - You can access the API documentation at `http://localhost:8000/docs`.
+   - Profiler will be available at `http://localhost:8000/profiler?p=`.
+
+2. **Run the FastAPI server with Docker:**
+   ```sh
+   docker-compose up
+   ```
+   - The server will start running at `http://localhost:8000`.
+   - You can access the API documentation at `http://localhost:8000/docs`.
+   - Profiler will be available at `http://localhost:8000/profiler?p=`.
