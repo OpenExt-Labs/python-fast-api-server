@@ -14,9 +14,14 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.post("", status_code=201)
 async def user_create(schema: UserCreateRequestBody) -> Response[UserPublic]:
-  """Create a new user."""
-  user: User = await users.create(schema)
-  return Response[UserPublic](result=user)
+  try:
+    """Create a new user."""
+    user: User = await users.create(schema)
+    return Response[UserPublic](result=user)
+  except Exception as e:
+    logger.exception(e)
+    raise HTTPException(status_code=400, detail=e.__str__())
+
 
 @router.get("", status_code=200)
 async def users_list() -> ResponseMulti[UserPublic]:
