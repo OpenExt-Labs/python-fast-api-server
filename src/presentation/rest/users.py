@@ -19,13 +19,13 @@ async def user_create(schema: UserCreateRequestBody) -> Response[UserPublic]:
     return Response[UserPublic](result=user)
 
 
+# Get slice with pagination
 @router.get("", status_code=200)
-async def users_list() -> ResponseMulti[UserPublic]:
+async def users_list(offset: int = 0, limit: int = 10) -> ResponseMulti[UserPublic]:
     try:
-        """Get all users."""
         users_public = [
             UserPublic.from_orm(user)
-            async for user in UsersRepository().all()
+            async for user in UsersRepository().get_slice(offset, limit)
         ]
         return ResponseMulti[UserPublic](result=users_public)
     except Exception as e:

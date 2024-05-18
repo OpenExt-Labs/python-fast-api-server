@@ -14,6 +14,10 @@ class UsersRepository(BaseRepository[UsersTable]):
         async for instance in self._all():
             yield User.from_orm(instance)
 
+    async def get_slice(self, offset: int, limit: int) -> AsyncGenerator[User, None]:
+        async for instance in self._get_slice(offset=offset, limit=limit):
+            yield User.from_orm(instance)
+
     async def get(self, id_: int) -> User:
         instance = await self._get(key="id", value=id_)
         return User.from_orm(instance)

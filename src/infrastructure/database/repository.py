@@ -116,6 +116,14 @@ class BaseRepository(Session, Generic[ConcreteTable]):  # type: ignore
         for schema in schemas:
             yield schema
 
+    async def _get_slice(self, offset: int, limit: int) -> AsyncGenerator[ConcreteTable, None]:
+        query = select(self.schema_class).offset(offset).limit(limit)
+        result: Result = await self.execute(query)
+        schemas = result.scalars().all()
+
+        for schema in schemas:
+            yield schema
+            
     async def delete(self, id_: int) -> None:
         await self.execute(
             delete(self.schema_class).where(self.schema_class.id == id_)
