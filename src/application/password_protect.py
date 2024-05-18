@@ -1,7 +1,11 @@
 from fastapi import Depends, HTTPException, Query
+import os
+from dotenv import load_dotenv
+
+load_dotenv('.env.local')
 
 def verify_password(p: str = Query(..., description="Password required")):
-    correct_password = "876893"
+    correct_password = os.getenv("PROFILER_SECRET_P")
     if p != correct_password:
         raise HTTPException(status_code=403, detail="Forbidden")
 

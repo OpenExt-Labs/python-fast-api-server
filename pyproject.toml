@@ -2,7 +2,7 @@
 name = "fast_api_sample"
 version = "0.1.0"
 description = ""
-authors = ["sangle <sangle@vng.com.vn>"]
+authors = ["sangle <sangle@openext.dev"]
 readme = "README.md"
 
 
