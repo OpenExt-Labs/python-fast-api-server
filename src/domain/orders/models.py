@@ -15,8 +15,6 @@ class _OrderPublic(PublicModel):
 class OrderCreateRequestBody(_OrderPublic):
     """Order create request body."""
 
-    pass
-
 
 class OrderPublic(_OrderPublic):
     """The internal application representation."""
@@ -34,8 +32,6 @@ class _OrderInternal(InternalModel):
 
 class OrderUncommited(_OrderInternal):
     """This schema is used for creating instance in the database."""
-
-    pass
 
 
 class Order(_OrderInternal):
