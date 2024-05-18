@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fast_api_sample"
+name = "python-fast-api-sample"
 version = "0.1.0"
 description = ""
 authors = ["sangle <sangle@openext.dev"]
