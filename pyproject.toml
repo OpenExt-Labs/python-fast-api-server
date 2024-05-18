@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "medium-fastapi-layered-2023"
+name = "fast_api_sample"
 version = "0.1.0"
 description = ""
 authors = ["sangle <sangle@vng.com.vn>"]

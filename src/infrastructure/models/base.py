@@ -3,9 +3,11 @@ This model includes basic data models that are used in the whole application.
 """
 
 import json
-from typing import TypeVar
+from typing import Generic, Optional, TypeVar
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, Extra, Field
+from pydantic.generics import GenericModel
+
 
 __all__ = (
     "InternalModel",
@@ -76,3 +78,25 @@ class PublicModel(BaseModel):
 
 
 _PublicModel = TypeVar("_PublicModel", bound=PublicModel)
+
+
+T = TypeVar("T")
+
+class ResponseModel(GenericModel, Generic[T]):
+    error: int = Field(0, description="Error code")
+    msg: str = Field("", description="Error message")
+    data: Optional[T] = Field(None, description="Response data")
+
+    class Config:
+        json_encoders = {
+            # Add any specific JSON encoders here if needed
+        }
+        orm_mode = True
+        use_enum_values = True
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        extra = Extra.ignore
+        alias_generator = lambda s: "".join(
+            word.capitalize() if i else word
+            for i, word in enumerate(s.split('_'))
+        )
